@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Principal</title>
+
+    <!-- Bootstrap -->
+    <link href="../bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bootstrap/css/mycss.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div id="opengl_gou" class="text-center"></div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../bootstrap/js/bootstrap.min.js"></script>
+    <script src="../build_stats/dat.gui.js"></script>
+    <script src="../build_stats/stats.min.js"></script>
+    <script src="../src_tree/three.min.js"></script>
+	<script src="../build_stats/OrbitControls.js"></script>
+    <script type="text/javascript">
+      $(function () {
+        init_esferas();
+      });
+    function init_esferas(){//Funcion de Guorad shading
+            // create a scene, that will hold all our elements such as objects, cameras and lights.
+            var scene = new THREE.Scene();
+
+            // create a camera, which defines where we're looking at.
+            var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+            // create a render and set the size
+            var renderer = new THREE.WebGLRenderer();
+
+            renderer.setClearColorHex(0xFFFFFF, 1.0);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMapEnabled = true;
+			
+
+            //creando la esfera 1
+            var sphereGeometry = new THREE.SphereGeometry(30,50,50);
+            var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
+            var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+            // posición de la esfera 
+            sphere.position.x=-20;
+            sphere.position.y=10;
+            sphere.position.z=2;
+            sphere.castShadow=true;
+            // adiriendolo a la escena 
+            scene.add(sphere);
+
+            //creando la esfera 2
+            var sphereGeometry2 = new THREE.SphereGeometry(30,50,50);
+            var sphereMaterial2 = new THREE.MeshLambertMaterial({color: 0x7777ff});
+            var sphere2 = new THREE.Mesh(sphereGeometry2,sphereMaterial2);
+            // posición de la esfera 
+            sphere2.position.x=30;
+            sphere2.position.y=10;
+            sphere2.position.z=0;
+            sphere2.castShadow=true;
+            // adiriendolo a la escena 
+            scene.add(sphere2);
+            
+            // position and point the camera to the center of the scene
+            camera.position.x = -70;
+            camera.position.y = 100;
+            camera.position.z = 70;
+            camera.lookAt(scene.position);
+			
+			//para que los objetos comiencen a girar
+			sphere.rotation.y=1;
+
+            // add subtle ambient lighting
+            var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+            scene.add(ambientLight);
+
+            // add spotlights for the shadows 
+            var spotLight1 = new THREE.SpotLight( 0xffffff );
+            spotLight1.position.set( -60, 150, 0 );
+            spotLight1.castShadow = true;
+            scene.add( spotLight1 );
+
+            // add the output of the renderer to the html element
+            $("#opengl_gou").append(renderer.domElement);
+			
+
+            //ángulo de moviemiento inicial de cada figura. 
+            var stepesphera=0.018;
+            var step=0;
+            
+
+            
+            render();
+			function render() {
+
+                //moviemiento circular de la esfera
+                step+=0.1;
+                sphere.position.x =-60;
+                sphere.position.y =10*Math.sin(step);
+
+                step+=0.001;
+                sphere2.position.x =30;
+                sphere2.position.y =20*Math.sin(step);
+				
+                //llamada al render
+                requestAnimationFrame(render);
+                //graficación con las nuevas posiciones
+                renderer.render(scene, camera);
+            }
+
+    }
+    </script>
+  </body>
+</html>
