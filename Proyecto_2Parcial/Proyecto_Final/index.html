@@ -43,14 +43,11 @@
                 <div class="col-lg-5 col-md-5 col-sm-8 col-xs-9 bhoechie-tab-container">
                     <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 bhoechie-tab-menu">
                       <div class="list-group">
-                        <a href="#" id="btn_flat" class="list-group-item active text-center">
-                          <h4 class="glyphicon glyphicon-cog"></h4><br/>Flat Shading
+                        <a href="#" id="btn_esferas" class="list-group-item active text-center">
+                          <h4 class="glyphicon glyphicon-cog"></h4><br/>Esferas
                         </a>
-                        <a href="#" id="btn_gou" class="list-group-item text-center">
-                          <h4 class="glyphicon glyphicon-cog"></h4><br/>Gouraud Shading
-                        </a>
-                        <a href="#" id="btn_phong" class="list-group-item text-center">
-                          <h4 class="glyphicon glyphicon-cog"></h4><br/>Phong Shading
+                        <a href="#" id="btn_paisaje" class="list-group-item text-center">
+                          <h4 class="glyphicon glyphicon-cog"></h4><br/>Paisaje
                         </a>
                       </div>
                     </div>
@@ -59,7 +56,7 @@
                         <div class="bhoechie-tab-content active">
                             <div class="row">
                                  <div class="col-md-9">
-                                     <h3>Flat Shading</h3>
+                                     <h3>Esferas</h3>
                                  </div>
                                  <div class="col-md-3">
                                      <button type="button" class="btn btn-info glyphicon glyphicon-remove btn_cerrar"></button>
@@ -70,19 +67,7 @@
                         <div class="bhoechie-tab-content">
                             <div class="row">
                                  <div class="col-md-9">
-                                     <h3>Gouraud Shading</h3>
-                                 </div>
-                                 <div class="col-md-3">
-                                     <button type="button" class="btn btn-info glyphicon glyphicon-remove btn_cerrar"></button>
-                                 </div>
-                            </div>
-                        </div>
-            
-                        <!-- hotel search -->
-                        <div class="bhoechie-tab-content">
-                            <div class="row">
-                                 <div class="col-md-9">
-                                     <h3>Phong Shading</h3>
+                                     <h3>Paisaje</h3>
                                  </div>
                                  <div class="col-md-3">
                                      <button type="button" class="btn btn-info glyphicon glyphicon-remove btn_cerrar"></button>
@@ -121,19 +106,15 @@
             $("#btn_menu").show("slow");
         });
         //se carga en un iframe el html que tiene el shading correspondiente
-        $('<iframe src="data/flat.html" width="'+window.innerWidth+'" height="'+window.innerHeight+'"></iframe>').appendTo("#opengl");
+        $('<iframe src="data/esferas.html" width="'+window.innerWidth+'" height="'+window.innerHeight+'"></iframe>').appendTo("#opengl");
         
-        $( "#btn_flat" ).click(function() {//se carga en un iframe el html del flat shading
+        $( "#btn_esferas" ).click(function() {//se carga en un iframe el html del flat shading
             $("#opengl").empty();
-            $('<iframe src="data/flat.html" width="'+window.innerWidth+'" height="'+window.innerHeight+'"></iframe>').appendTo("#opengl");
+            $('<iframe src="data/esferas.html" width="'+window.innerWidth+'" height="'+window.innerHeight+'"></iframe>').appendTo("#opengl");
         });
-        $("#btn_gou").click(function(){//se carga en un iframe el html del Gouraud shading
+        $("#btn_paisaje").click(function(){//se carga en un iframe el html del Gouraud shading
             $("#opengl").empty();
-            $('<iframe src="data/gou.html" width="'+window.innerWidth+'" height="'+window.innerHeight+'"></iframe>').appendTo("#opengl");
-        });
-        $("#btn_phong").click(function(){////se carga en un iframe el html del Phong shading
-            $("#opengl").empty();
-            $('<iframe src="data/phong.html" width="'+window.innerWidth+'" height="'+window.innerHeight+'"></iframe>').appendTo("#opengl");
+            $('<iframe src="data/scenaPrueba.html" width="'+window.innerWidth+'" height="'+window.innerHeight+'"></iframe>').appendTo("#opengl");
         });
 
     });
