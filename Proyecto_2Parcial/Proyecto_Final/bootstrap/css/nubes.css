@@ -1,0 +1,68 @@
+body{
+	background-color:rgb(95, 209, 237);	
+	}
+
+@keyframes animar{
+	 0%  { } 
+     50% { transform:translateX(700px) scale(1.2);}	 
+     100% {transform:translateX(0px); }	
+}
+
+
+
+
+.circ1{   
+   width:120px;
+   height:120px;   
+   border-radius:120px;
+   background-color:rgb(255, 255, 255);   
+      margin:20px 0 0 60px;   
+   }
+
+
+.circ2{
+   width:150px;
+   height:80px;      
+   border-radius: 80px / 50px;
+   background-color:rgb(255, 255, 255);   
+        margin:-90px 0 0 80px;
+   }
+      
+.circ3{
+   width:150px;
+   height:90px;   
+   border-radius: 80px / 50px;
+   background-color:rgb(255, 255, 255);   
+   margin:-90px 0 0 0px;   
+   }
+
+		
+#sq{
+   animation-name: animar;
+  animation-duration: 20s;
+  animation-timing-function: lineal;
+   animation-iteration-count:infinite;	
+   opacity: 0.6;
+   margin:0;
+   position:absolute;
+}
+
+#sq2{
+  animation-name: animar;
+  animation-duration: 15s;
+  animation-timing-function: lineal;
+  animation-iteration-count:infinite;	
+   opacity: 0.4;
+   position:absolute;
+   margin:30px 0 0 0;
+}
+
+#sq3{
+  animation-name: animar;
+   animation-duration: 12s;
+  animation-timing-function: lineal;
+ animation-iteration-count:infinite;	
+   opacity: 0.7;
+   position:absolute;
+   margin:100px 0 0 50px;
+}
