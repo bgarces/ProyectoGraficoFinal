@@ -5,6 +5,8 @@ body {
 body {
   /*padding-top: 70px;*/
 }
+  
+.modal-backdrop {background: #f7f7f7;}
 /* Credit to bootsnipp.com for the css for the color graph */
 .colorgraph {
   height: 5px;
@@ -31,6 +33,14 @@ body {
 #menu .navbar-default .navbar-brand{
   color: #F7F7F7;
   font-size: 2em;
+}
+.modal-header{
+  background-color: #007AFF;
+  color: #F7F7F7;
+}
+.thumbnail{
+  border-style: solid;
+  border-color: #4CDA64;
 }
 #menu .col-xs-6{
   padding-top: 7%;

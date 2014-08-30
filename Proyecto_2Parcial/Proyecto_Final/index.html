@@ -61,6 +61,32 @@
     </div>
     <div id="opengl" class="text-center"></div>
     
+    <!-- Modal -->
+    <div class="modal fade" id="modal_textura" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Seleccione una textura</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-4">
+                    <a id="btn_textura1" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/cesped1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura2" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra7.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura3" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/cesped1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                </div>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <div id="footer">
       <div class="container">
         <p class="myfooter text-right">Desarrollado por: Raquel Vill&oacute;n, Carlos Franco, Bryan Garc&eacute;s Murillo.</p>
@@ -125,6 +151,7 @@
             }
         }
 
+        
         var adoquinGeometria = new THREE.CubeGeometry(18,2,41);
         var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
         var adoquinMaterial = new THREE.MeshPhongMaterial({map:adoquinTextura, side:THREE.DoubleSide});
@@ -236,11 +263,23 @@
             var intersects = raycaster.intersectObjects([paredCentral, paredIzquierda, paredDerecha]);
 
             if (intersects.length > 0) {
-                var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
-                intersects[ 0 ].object.material.map = adoquinTextura;
         
-                 alert("dfvdfv");
-            
+                $('#modal_textura').modal('show');
+                $("#btn_textura1").click(function() {
+                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
+                    intersects[ 0 ].object.material.map = adoquinTextura;
+                    $('#modal_textura').modal('hide');
+                });
+                $("#btn_textura2").click(function() {
+                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
+                    intersects[ 0 ].object.material.map = adoquinTextura;
+                    $('#modal_textura').modal('hide');
+                });
+                $("#btn_textura3").click(function() {
+                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
+                    intersects[ 0 ].object.material.map = adoquinTextura;
+                    $('#modal_textura').modal('hide');
+                });        
 
 
             }
