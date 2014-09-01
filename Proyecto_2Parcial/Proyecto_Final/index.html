@@ -61,32 +61,6 @@
     </div>
     <div id="opengl" class="text-center"></div>
     
-    <!-- Modal -->
-    <div class="modal fade" id="modal_textura" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Seleccione una textura</h4>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-                <div class="col-xs-4">
-                    <a id="btn_textura1" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/cesped1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
-                </div>
-                <div class="col-xs-4">
-                    <a id="btn_textura2" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra7.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
-                </div>
-                <div class="col-xs-4">
-                    <a id="btn_textura3" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/cesped1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
-                </div>
-                
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    
     <div id="footer">
       <div class="container">
         <p class="myfooter text-right">Desarrollado por: Raquel Vill&oacute;n, Carlos Franco, Bryan Garc&eacute;s Murillo.</p>
@@ -109,91 +83,96 @@
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
         // create a camera, which defines where we're looking at.
-        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var camera = new THREE.PerspectiveCamera(75, 1.0277349768875192, 0.1, 1000);
         // create a render and set the size
         var renderer = new THREE.WebGLRenderer({ alpha: true });
         //var renderer = new THREE.WebGLRenderer();
-        renderer.setSize(675, 675);
+        //renderer.setClearColorHex(0xffffff, 1.0);
+        renderer.setSize(600, 600);
         renderer.shadowMapEnabled = true;
+		
+		//variables para el control de los click sobre los objetos
+			var projector = new THREE.Projector();
+			var rotacionesTodas=true;
+			//Arreglo que contendra los objetos que giran alrededor de la tetera
+			var objects = [];
+		//Agregar evento para los click de los objetos
+			document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+			
+			//objects.push(scene);
 
-        var projector = new THREE.Projector();
-        document.addEventListener('mousedown', onDocumentMouseDown, false);
-
-
-        //----------------------TEXTURAS-----------------//
-        var cespedTextura = new THREE.ImageUtils.loadTexture("texturas/cesped1.jpg");
-        var paredCTextura = new THREE.ImageUtils.loadTexture("texturas/piedra7.jpg");
-        var paredITextura = new THREE.ImageUtils.loadTexture("texturas/ladrillo1.jpg");
-        var paredDTextura = new THREE.ImageUtils.loadTexture("texturas/ladrillo3.jpg");
-        
-
-
-        // create the ground cesped
-        var planoCesped = new THREE.PlaneGeometry(175,225);
-        var cespedMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
-        var cesped = new THREE.Mesh(planoCesped,cespedMaterial);
-        cesped.receiveShadow  = true;
-        // rotate and position the cesped
-        cesped.rotation.x=0.5*Math.PI;
-        // add the cesped to the scene
-        scene.add(cesped);
+        // create the ground plane
+        var planeGeometry = new THREE.PlaneGeometry(150,200);
+        var planeTextura = new THREE.ImageUtils.loadTexture("texturas/cesped1.jpg");
+        var planeMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        var plane = new THREE.Mesh(planeGeometry,planeMaterial);
+        plane.receiveShadow  = true;
+        // rotate and position the plane
+        plane.rotation.x=0.5*Math.PI;
+        // add the plane to the scene
+        scene.add(plane);
+			
+			
         //relieve del cesped
-         var relieveGeometria = new THREE.IcosahedronGeometry(4);
-        var relieveMaterial= new THREE.MeshPhongMaterial({ map:cespedTextura, side:THREE.DoubleSide });
-        for (var j = 0 ; j < (planoCesped.height/4) ; j++) {
-            for (var i = 0 ; i < planoCesped.width/4 ; i++) {
-                var cespedR = new THREE.Mesh(relieveGeometria, relieveMaterial);
-                cespedR.position.z=-((planoCesped.height)/2)+1+(j*4)+0;
-                cespedR.position.x=-((planoCesped.width)/2)+1+(i*4)+0;
-                cespedR.position.y=0;
-                cespedR.receiveShadow=true;
-                scene.add(cespedR);
+         var cubeGeometry = new THREE.IcosahedronGeometry(4);
+        var cubeMaterial = new THREE.MeshPhongMaterial({ map:planeTextura, side:THREE.DoubleSide });
+        for (var j = 0 ; j < (planeGeometry.height/4) ; j++) {
+            for (var i = 0 ; i < planeGeometry.width/4 ; i++) {
+                var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+
+                cube.position.z=-((planeGeometry.height)/2)+1+(j*4)+0;
+                cube.position.x=-((planeGeometry.width)/2)+1+(i*4)+0;
+                cube.position.y=0;
+                cube.receiveShadow=true;
+                scene.add(cube);
             }
         }
-
-        
-        var adoquinGeometria = new THREE.CubeGeometry(18,2,41);
-        var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
-        var adoquinMaterial = new THREE.MeshPhongMaterial({map:adoquinTextura, side:THREE.DoubleSide});
-        for (var i = 0 ; i < planoCesped.width/22 ; i++) {
-                var adoquin = new THREE.Mesh(adoquinGeometria, adoquinMaterial);
-                adoquin.position.z=-((planoCesped.height)/2)+(i*26)+21;
-                adoquin.position.x=-((planoCesped.width)/2)+(i*22)+9;
+						
+		
+        var adoquinG = new THREE.CubeGeometry(18,2,41);
+        var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra3.jpg");
+        var adoquinM = new THREE.MeshPhongMaterial({map:adoquinTextura, side:THREE.DoubleSide});
+        for (var i = 0 ; i < planeGeometry.width/22 ; i++) {
+                var adoquin = new THREE.Mesh(adoquinG, adoquinM);
+                adoquin.position.z=-((planeGeometry.height)/2)+(i*26)+21;
+                adoquin.position.x=-((planeGeometry.width)/2)+(i*22)+9;
                 adoquin.position.y=3;
                 scene.add(adoquin);
-                var adoquin2 = new THREE.Mesh(adoquinGeometria, adoquinMaterial);
-                adoquin2.position.x=-((planoCesped.width)/2)+(i*22)+9;
-                adoquin2.position.z=((planoCesped.height)/2)-(i*26)-24;
+                var adoquin2 = new THREE.Mesh(adoquinG, adoquinM);
+                adoquin2.position.x=-((planeGeometry.width)/2)+(i*22)+9;
+                adoquin2.position.z=((planeGeometry.height)/2)-(i*26)-24;
                 adoquin2.position.y=3;
                 scene.add(adoquin2);
             }
 
 
-        var marcoGeometria = new THREE.PlaneGeometry(200,250);
-        var marcoTextura = new THREE.ImageUtils.loadTexture("texturas/piedra9.jpg");
-        var marcoMaterial = new THREE.MeshPhongMaterial({ color: 0x3E412F });
-        var marco = new THREE.Mesh(marcoGeometria,marcoMaterial);
-        cesped.receiveShadow  = true;
-        // rotate and position the cesped
-        marco.rotation.x=-0.5*Math.PI;
-        // add the cesped to the scene
-        scene.add(marco);
+        var planeGeometry2 = new THREE.PlaneGeometry(200,250);
+        var planeTextura2 = new THREE.ImageUtils.loadTexture("texturas/piedra9.jpg");
+        var planeMaterial2 = new THREE.MeshPhongMaterial({ color: 0x3E412F });
+        var plane2 = new THREE.Mesh(planeGeometry2,planeMaterial2);
+        plane.receiveShadow  = true;
+        // rotate and position the plane
+        plane2.rotation.x=-0.5*Math.PI;
+        // add the plane to the scene
+        scene.add(plane2);
+		objects.push(plane2);
 
-        var marcoAGeometria = new THREE.CubeGeometry(18,2,41);
-        var marcoAMaterial = new THREE.MeshPhongMaterial({map:marcoTextura, side:THREE.DoubleSide});
-        for (var j = 0 ; j < (marcoGeometria.height/46) ; j++) {
-            for (var i = 0 ; i < marcoGeometria.width/19 ; i++) {
-                var marcoA = new THREE.Mesh(marcoAGeometria, marcoAMaterial);
-                marcoA.position.z=-((marcoGeometria.height)/2)+(j*41)+22;
-                marcoA.position.x=-((marcoGeometria.width)/2)+0+(i*18)+10;
-                marcoA.position.y=.5;
-                scene.add(marcoA);
+        var cubeGeometry = new THREE.CubeGeometry(18,2,41);
+        var cubeMaterial = new THREE.MeshPhongMaterial({map:planeTextura2, side:THREE.DoubleSide});
+        for (var j = 0 ; j < (planeGeometry2.height/46) ; j++) {
+            for (var i = 0 ; i < planeGeometry2.width/19 ; i++) {
+                var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+                cube.position.z=-((planeGeometry2.height)/2)+(j*41)+22;
+                cube.position.x=-((planeGeometry2.width)/2)+0+(i*18)+10;
+                cube.position.y=.5;
+                scene.add(cube);
+				
             }
         }
 
-       function crearParedes (ancho, alto, grueso, pX, pY,pZ, paredTextura) {
+       function crearParedes (ancho, alto, grueso, pX, pY,pZ, material) {
             var paredGeometria = new THREE.CubeGeometry(ancho, alto, grueso);
-            
+            var paredTextura = new THREE.ImageUtils.loadTexture(material);
             var paredMaterial = new THREE.MeshPhongMaterial({ map:paredTextura, side:THREE.DoubleSide });
             var pared = new THREE.Mesh(paredGeometria, paredMaterial);
             // posicion de pared 1
@@ -203,10 +182,22 @@
             pared.castShadow=true;
             return pared;
        }
-        
-        var paredCentral= crearParedes(65,30,18,25,10,0,paredCTextura);
-        var paredIzquierda= crearParedes(65,30,18,-20,10,50,paredITextura);
-        var paredDerecha= crearParedes(65,30,18,-20,10,-50,paredDTextura);
+        //crando la esfera
+            var sphereGeometry = new THREE.SphereGeometry(10,54,54);
+            var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
+            sphereMaterial.shading = THREE.FlatShading;
+            var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+            // posición de la esfera 
+            sphere.position.x=0;
+            sphere.position.y=20;
+            sphere.position.z=20;
+            sphere.castShadow=true;
+            // adiriendolo a la escena 
+            scene.add(sphere);
+			
+        var paredCentral= crearParedes(65,30,18,25,10,0,"texturas/piedra7.jpg");
+        var paredIzquierda= crearParedes(65,30,18,-20,10,50,"texturas/ladrillo1.jpg");
+        var paredDerecha= crearParedes(65,30,18,-20,10,-50,"texturas/ladrillo3.jpg");
         
         scene.add(paredCentral);
         scene.add(paredIzquierda);
@@ -223,14 +214,12 @@
         scene.add(ambientLight);
 
         // add spotlights for the shadows 
-        var spotLight1 = new THREE.SpotLight( 0xffffff );
+       var spotLight1 = new THREE.SpotLight( 0xffffff );
         spotLight1.position.set( 200, 250, 200 );
         spotLight1.castShadow = true;
         scene.add( spotLight1 );
-
         var spotLight2 = new THREE.SpotLight( 0xffffff );
         spotLight2.position.set( -200, 250, -200 );
-        //spotLight2.castShadow = true;
         scene.add( spotLight2 );
 
 
@@ -242,47 +231,11 @@
         function render() {
             paredIzquierda.rotation.y=4.715;
             paredDerecha.rotation.y=4.715;
+			
       
             requestAnimationFrame(render);
             //graficación con las nuevas posiciones
             renderer.render(scene, camera);
-        }
-
-        var projector = new THREE.Projector();
-        var tube;
-
-        function onDocumentMouseDown(event) {
-
-            event.preventDefault();
-
-            var vector = new THREE.Vector3(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0.5);
-            projector.unprojectVector(vector, camera);
-
-            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-
-            var intersects = raycaster.intersectObjects([paredCentral, paredIzquierda, paredDerecha]);
-
-            if (intersects.length > 0) {
-        
-                $('#modal_textura').modal('show');
-                $("#btn_textura1").click(function() {
-                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
-                    intersects[ 0 ].object.material.map = adoquinTextura;
-                    $('#modal_textura').modal('hide');
-                });
-                $("#btn_textura2").click(function() {
-                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
-                    intersects[ 0 ].object.material.map = adoquinTextura;
-                    $('#modal_textura').modal('hide');
-                });
-                $("#btn_textura3").click(function() {
-                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
-                    intersects[ 0 ].object.material.map = adoquinTextura;
-                    $('#modal_textura').modal('hide');
-                });        
-
-
-            }
         }
         
         
@@ -296,6 +249,38 @@
             $("#stats").append( stats.domElement );
             return stats;
         }
+		
+		//Funcion para el movimiento al dar clic en la escena
+			function onDocumentMouseDown( event ) {
+				event.preventDefault();
+
+				
+				var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1, - ( event.clientY / window.innerHeight ) * 2 + 1.2, 1 );
+				projector.unprojectVector( vector, camera );
+				
+				var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+				var intersects = raycaster.intersectObjects( objects );
+				
+				var vectorc = new THREE.Vector3().copy( intersects[ 0 ].point );
+				intersects[ 0 ].object.worldToLocal( vectorc );
+
+				
+				var posz=-((event.clientX - ((window.innerWidth-17)/2))/2.27);
+				var posx=intersects[ 0 ].point.x;
+				
+				if(posz<sphere.position.z-2)
+				sphere.position.z-=2;
+				else if(posz>sphere.position.z+2)
+				sphere.position.z+=2;
+				else
+				sphere.position.z=posz;
+				
+				if(posx<sphere.position.x-2)
+				sphere.position.x-=2;
+				else if(posx>sphere.position.x+2)
+				sphere.position.x+=2;
+				}
+		
     });
 </script>
   </body>
