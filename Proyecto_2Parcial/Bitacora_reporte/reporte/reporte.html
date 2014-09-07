@@ -84,7 +84,7 @@
         </li>
         <li>
           <a href="#" data-toggle="collapse" data-target="#toggleDemo2" data-parent="#sidenav01" class="collapsed">
-          <span class="glyphicon glyphicon-chevron-down"></span> Cubo <span class="caret pull-right"></span>
+          <span class="glyphicon glyphicon-chevron-down"></span> Textura <span class="caret pull-right"></span>
           </a>
           <div class="collapse" id="toggleDemo2" style="height: 0px;">
             <ul class="nav nav-list">
@@ -95,7 +95,7 @@
         </li>
         <li>
           <a href="#" data-toggle="collapse" data-target="#toggleDemot" data-parent="#sidenav01" class="collapsed">
-          <span class="glyphicon glyphicon-chevron-down"></span> Tetera <span class="caret pull-right"></span>
+          <span class="glyphicon glyphicon-chevron-down"></span> Elevaciones <span class="caret pull-right"></span>
           </a>
           <div class="collapse" id="toggleDemot" style="height: 0px;">
             <ul class="nav nav-list">
@@ -297,64 +297,33 @@
       <div class="container" id="cubo_1"><!--Cubo-->
       
         <div class="page-header">
-          <h3><span class="glyphicon glyphicon-th-list"></span> Cubo - Creaci&oacute;n</h3>
+          <h3><span class="glyphicon glyphicon-th-list"></span> Pared - Textura</h3>
         </div>
         <div class="row">
           <div class="col-sm-6 col-md-4">
             <div class="well">
               <div id="cubo_opengl"></div>
               <div class="caption">
-                <p class="text-center  text-primary"><strong>Imagen cubo</strong></p>
+                <p class="text-center  text-primary"><strong>Imagen textura</strong></p>
               </div>
             </div>
           </div>
-          <div class="col-md-8 text-justify">
-            <p>Para crear un cubo con Three.js, usamos la clase CubeGeometry en donde especificamos el tama&ntilde;o. Despu&eacute;s creamos el material con el con el cual construiremos el cubo.</p>
-            <p>Una vez creados los objetos anteriores procedemos a crear nuestro contenedor donde establecemos los objectos para crear el cubo, en este caso el objeto con las dimensiones y el objeto con el material. Sin olvidar agregarlo a la escena en una respectiva ubicaci&oacute;n.</p>
-            <pre class="prettyprint">
-            // crear el cubo
-            var cubeGeometry = new THREE.CubeGeometry(4,4,4);
-            var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
-            var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-            cube.castShadow = true;
-
-            // posicionando al cubo
-            cube.position.x=-4;
-            cube.position.y=3;
-            cube.position.z=0;
-
-            // agregando el cubo a la escena
-            scene.add(cube);
-            </pre>
-          </div>
-        </div>
-      </div>
-      <div class="container" id="cubo_2"><!--Cubo-->
-      
-        <div class="page-header">
-          <h3><span class="glyphicon glyphicon-th-list"></span> Cubo - Animaci&oacute;n</h3>
-        </div>
-        <div class="row">
-          <div class="col-sm-6 col-md-4">
-            <div class="well">
-              <div id="cubo_opengl_a"></div>
-              <div class="caption">
-                <p class="text-center  text-primary"><strong>Cubo Animado</strong></p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-8">
-            <p>Para la animaci&oacute;n de una objecto creado en Three.js es necesario escribir dicha funcionalidad dentro de una funci&oacute;n ya que esta se repetir&aacute; varias veces.</p>
-            <p>El objecto cubo creado anteriormente nos permite acceder a los par&aacute;metros de rotaci&oacute;n de cada eje, dicho esto podemos establecer su movimiento.</p>
-            <pre class="prettyprint">
-              function render_cubo_a() {
-                // asigando ubicacion en el eje y
-                cube.rotation.y += 0.02;
-                // render usando requestAnimationFrame
-                // esta funci&oacute;n se ejecutar&aacute; varias veces
-                renderer.render(scene, camera);
-                requestAnimationFrame(render_cubo_a); 
-              }
+          <div class="col-md-8 text-justify" >
+            <p>Para dar textura a un objeto, debemos crear este objeto, en este caso crearemos un cubo con las dimesiones de una pared.</p>
+            <p>Una vez creado el cubo con las dimensiones correctas procederemos a mapearle la textura, que ser&iacute;a la imagen de una pared en este caso, esa textura se le asigna a de un objeto THREE.MeshPhongMaterial de la siguiente manera var paredMaterial = new THREE.MeshPhongMaterial({ map:paredTextura, side:THREE.DoubleSide });.</p>
+          <pre class="prettyprint">
+  function crearParedes (ancho, alto, grueso, pX, pY,pZ, paredTextura) {
+    var paredGeometria = new THREE.CubeGeometry(ancho, alto, grueso);
+              
+    var paredMaterial = new THREE.MeshPhongMaterial({ map:paredTextura, side:THREE.DoubleSide });
+    var pared = new THREE.Mesh(paredGeometria, paredMaterial);
+    // posicion de pared 1
+    pared.position.x=pX;
+    pared.position.y=pY;
+    pared.position.z=pZ;
+    pared.castShadow=true;
+    return pared;
+  }
             </pre>
           </div>
         </div>
@@ -450,14 +419,14 @@
       <div class="container" id="tetera"><!--Tetera-->
       
         <div class="page-header">
-          <h3><span class="glyphicon glyphicon-th-list"></span> Tetera - Creaci&oacute;n</h3>
+          <h3><span class="glyphicon glyphicon-th-list"></span> C&eacute;sped - Creaci&oacute;n</h3>
         </div>
         <div class="row">
           <div class="col-sm-6 col-md-4">
             <div class="well">
               <div id="tetera_opengl"></div>
               <div class="caption">
-                <p class="text-center  text-primary"><strong>Tetera</strong></p>
+                <p class="text-center  text-primary"><strong>C&eacute;sped</strong></p>
               </div>
             </div>
           </div>
@@ -847,20 +816,26 @@
           creacion_toroide(scene_toroide,camera,renderer_t,opt_animation);
           creacion_tetera(scene_tetera,camera,renderer_te,opt_animation)
         }
+
         function creacion_cubo(scene,camera,renderer,opt_animation){
-          // create a cube
-          var cubeGeometry = new THREE.CubeGeometry(15,15,15);
-          var cubeMaterial = new THREE.MeshLambertMaterial({color: 0xff0000});
-          var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-          cube.castShadow = true;
-
-          // position the cube
-          cube.position.x=-4;
-          cube.position.y=3;
-          cube.position.z=0;
-
-          // add the cube to the scene
-          scene.add(cube);
+          var paredITextura = new THREE.ImageUtils.loadTexture("texturas/ladrillo1.jpg");
+          var ancho=40;
+          var alto=20;
+          var grueso=5;
+          var pX=-4;
+          var pY=3;
+          var pZ=0;
+          var paredGeometria = new THREE.CubeGeometry(ancho, alto, grueso);
+              
+          var paredMaterial = new THREE.MeshPhongMaterial({ map:paredITextura, side:THREE.DoubleSide });
+          var pared = new THREE.Mesh(paredGeometria, paredMaterial);
+          // posicion de pared 1
+          pared.position.x=pX;
+          pared.position.y=pY;
+          pared.position.z=pZ;
+          pared.castShadow=true;
+         
+          scene.add(pared);
 
           // position and point the camera to the center of the scene
           camera.position.x = -30;
@@ -881,25 +856,22 @@
           // add the output of the renderer to the html element
           if (opt_animation==0) {
             $("#cubo_opengl").append(renderer.domElement);
-            render_cubo();
+            render_pared();
           };
           if (opt_animation==1) {
             $("#cubo_opengl_a").append(renderer.domElement);
-            render_cubo_a();
+            render_pared();
           };
 
           // call the render function
           
-          function render_cubo_a() {
+          function render_pared() {
               // render using requestAnimationFrame
-            cube.rotation.y += 0.02;
+            pared.rotation.y += 0.02;
               // render using requestAnimationFrame
             renderer.render(scene, camera);
 
-            requestAnimationFrame(render_cubo_a); 
-          }
-          function render_cubo() {
-            renderer.render(scene, camera);
+            requestAnimationFrame(render_pared); 
           }
         }
         function creacion_esfera(scene,camera,renderer,opt_animation){
@@ -1073,40 +1045,68 @@
         }
 
         function creacion_tetera(scene,camera,renderer,opt_animation){
-          var loader = new THREE.JSONLoader();
-          var tetera;
-              loader.load( "Teapot.js", function(geometry){
-                var material = new THREE.MeshLambertMaterial({color: 0x55B663});
-                //material.shading = THREE.FlatShading;
-                tetera = new THREE.Mesh(geometry, material);
-            });
-            loader.onLoadComplete=function(){
-                tetera.scale.set(5, 5, 5 );
-                tetera.position.x=0;
-                tetera.position.y=0;
-                tetera.position.z=0;
-                //tetera.rotation.x=-0.55*Math.PI;
-                scene.add( tetera );
+
+          // create the ground cesped
+          var planoCesped = new THREE.PlaneGeometry(80,50);
+          var cespedMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+          var cesped = new THREE.Mesh(planoCesped,cespedMaterial);
+          var cespedTextura = new THREE.ImageUtils.loadTexture("texturas/cesped1.jpg");
+          cesped.receiveShadow  = true;
+          // rotate and position the cesped
+          cesped.rotation.x=0.5*Math.PI;
+          // add the cesped to the scene
+          //relieve del cesped
+          var relieveGeometria = new THREE.IcosahedronGeometry(4);
+          var relieveMaterial= new THREE.MeshPhongMaterial({ map:cespedTextura, side:THREE.DoubleSide });
+          for (var j = 0 ; j < (planoCesped.height/4) ; j++) {
+              for (var i = 0 ; i < planoCesped.width/4 ; i++) {
+                  var cespedR = new THREE.Mesh(relieveGeometria, relieveMaterial);
+                  cespedR.position.z=-((planoCesped.height)/2)+1+(j*4)+0;
+                  cespedR.position.x=-((planoCesped.width)/2)+1+(i*4)+0;
+                  cespedR.position.y=0;
+                  cespedR.receiveShadow=true;
+                  scene.add(cespedR);
+              }
+          }
+          cesped.position.x=0;
+          cesped.position.y=0;
+          cesped.position.z=0;
+          cesped.castShadow=true;
+         
+          scene.add(cesped);
+
+          // position and point the camera to the center of the scene
+          camera.position.x = -30;
+          camera.position.y = 40;
+          camera.position.z = 30;
+          camera.lookAt(scene.position);
+
+          // add subtle ambient lighting
+          var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+          scene.add(ambientLight);
+
+          // add spotlight for the shadows
+          var spotLight = new THREE.SpotLight( 0xffffff );
+          spotLight.position.set( -40, 60, -10 );
+          spotLight.castShadow = true;
+          scene.add( spotLight );
+          
                 if (opt_animation==0) {
                   $("#tetera_opengl").append(renderer.domElement);
-                     render_tetera();
+                     render_piso();
                 };
                 if (opt_animation==1) {
                   $("#tetera_opengl_a").append(renderer.domElement);
-                  render_tetera_a();
+                  render_piso();
                 };
-            }
-              function render_tetera_a(){
+              function render_piso(){
                 // Read more about requestAnimationFrame at http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/;
-                tetera.rotation.y+=-0.01;
+                //cesped.rotation.y+=-0.01;
                 // Render the scene.
                 renderer.render(scene, camera);
-                requestAnimationFrame(render_tetera_a);
+                //requestAnimationFrame(render_piso);
               }
-              function render_tetera(){
-                renderer.render(scene, camera);
-                requestAnimationFrame(render_tetera);
-              }
+             
         }
         
 

@@ -154,7 +154,7 @@
         scene.add(cesped);
 			
         //relieve del cesped
-         var relieveGeometria = new THREE.IcosahedronGeometry(4);
+        var relieveGeometria = new THREE.IcosahedronGeometry(4);
         var relieveMaterial= new THREE.MeshPhongMaterial({ map:cespedTextura, side:THREE.DoubleSide });
         for (var j = 0 ; j < (planoCesped.height/4) ; j++) {
             for (var i = 0 ; i < planoCesped.width/4 ; i++) {
