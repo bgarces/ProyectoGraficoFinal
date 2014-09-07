@@ -60,7 +60,6 @@
         </audio>
     </div>
     <div id="opengl" class="text-center"></div>
-    
     <!-- Modal -->
     <div class="modal fade" id="modal_textura" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
@@ -72,13 +71,13 @@
           <div class="modal-body">
             <div class="row">
                 <div class="col-xs-4">
-                    <a id="btn_textura1" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/cesped1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
+                    <a id="btn_textura1" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
                 </div>
                 <div class="col-xs-4">
-                    <a id="btn_textura2" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra7.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
+                    <a id="btn_textura2" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra7.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
                 </div>
                 <div class="col-xs-4">
-                    <a id="btn_textura3" href="#" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/cesped1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                    <a id="btn_textura3" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo3.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
                 </div>
                 
             </div>
@@ -86,11 +85,13 @@
         </div>
       </div>
     </div>
+	</div>
     
-    <div id="footer">
+	<div id="footer">
       <div class="container">
         <p class="myfooter text-right">Desarrollado por: Raquel Vill&oacute;n, Carlos Franco, Bryan Garc&eacute;s Murillo.</p>
       </div>
+	</div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -109,26 +110,40 @@
         // create a scene, that will hold all our elements such as objects, cameras and lights.
         var scene = new THREE.Scene();
         // create a camera, which defines where we're looking at.
-        var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        var camera = new THREE.PerspectiveCamera(75, 1.0277349768875192, 0.1, 1000);
         // create a render and set the size
         var renderer = new THREE.WebGLRenderer({ alpha: true });
         //var renderer = new THREE.WebGLRenderer();
-        renderer.setSize(675, 675);
+        //renderer.setClearColorHex(0xffffff, 1.0);
+        renderer.setSize(600, 600);
         renderer.shadowMapEnabled = true;
-
-        var projector = new THREE.Projector();
-        document.addEventListener('mousedown', onDocumentMouseDown, false);
-
-
-        //----------------------TEXTURAS-----------------//
+		
+		//variables para el control de los click sobre los objetos
+			var projector = new THREE.Projector();
+			var rotacionesTodas=true;
+			//Arreglo que contendra las paredes
+            var objects = [];
+			var objectsParedes = [];
+			var objectsParedesCentral = [];
+			var objectsParedesIzquierda = [];
+			var objectsParedesDerecha = [];
+			var band=0;
+			
+			//Variable para el objeto al cual se le ha hecho click
+			var objetoClickeado;
+		//Agregar evento para los click de los objetos
+			document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+			//para ajustar el seguimiento de las esferas al puntero
+			var ajusteX=2.27;
+			
+		 //----------------------TEXTURAS-----------------//
         var cespedTextura = new THREE.ImageUtils.loadTexture("texturas/cesped1.jpg");
         var paredCTextura = new THREE.ImageUtils.loadTexture("texturas/piedra7.jpg");
         var paredITextura = new THREE.ImageUtils.loadTexture("texturas/ladrillo1.jpg");
         var paredDTextura = new THREE.ImageUtils.loadTexture("texturas/ladrillo3.jpg");
-        
+        	
 
-
-        // create the ground cesped
+        // create the ground plane
         var planoCesped = new THREE.PlaneGeometry(175,225);
         var cespedMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
         var cesped = new THREE.Mesh(planoCesped,cespedMaterial);
@@ -137,6 +152,7 @@
         cesped.rotation.x=0.5*Math.PI;
         // add the cesped to the scene
         scene.add(cesped);
+			
         //relieve del cesped
         var relieveGeometria = new THREE.IcosahedronGeometry(4);
         var relieveMaterial= new THREE.MeshPhongMaterial({ map:cespedTextura, side:THREE.DoubleSide });
@@ -150,8 +166,8 @@
                 scene.add(cespedR);
             }
         }
-
-        
+						
+		
         var adoquinGeometria = new THREE.CubeGeometry(18,2,41);
         var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
         var adoquinMaterial = new THREE.MeshPhongMaterial({map:adoquinTextura, side:THREE.DoubleSide});
@@ -170,26 +186,30 @@
 
 
         var marcoGeometria = new THREE.PlaneGeometry(200,250);
-        var marcoTextura = new THREE.ImageUtils.loadTexture("texturas/piedra9.jpg");
-        var marcoMaterial = new THREE.MeshPhongMaterial({ color: 0x3E412F });
+        var marcoTextura = new THREE.ImageUtils.loadTexture("texturas/piedra91.jpg");
+        var marcoMaterial = new THREE.MeshPhongMaterial({map:marcoTextura, side:THREE.DoubleSide});
         var marco = new THREE.Mesh(marcoGeometria,marcoMaterial);
         cesped.receiveShadow  = true;
         // rotate and position the cesped
         marco.rotation.x=-0.5*Math.PI;
         // add the cesped to the scene
         scene.add(marco);
+		objects.push(marco);
+		
+		//creando la esfera
+            var sphereGeometry = new THREE.SphereGeometry(10,54,54);
+            var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
+            sphereMaterial.shading = THREE.FlatShading;
+            var sphere = new THREE.Mesh(sphereGeometry,sphereMaterial);
+            // posición de la esfera 
+            sphere.position.x=0;
+            sphere.position.y=20;
+            sphere.position.z=20;
+            sphere.castShadow=true;
+            // adiriendolo a la escena 
+            scene.add(sphere);
 
-        var marcoAGeometria = new THREE.CubeGeometry(18,2,41);
-        var marcoAMaterial = new THREE.MeshPhongMaterial({map:marcoTextura, side:THREE.DoubleSide});
-        for (var j = 0 ; j < (marcoGeometria.height/46) ; j++) {
-            for (var i = 0 ; i < marcoGeometria.width/19 ; i++) {
-                var marcoA = new THREE.Mesh(marcoAGeometria, marcoAMaterial);
-                marcoA.position.z=-((marcoGeometria.height)/2)+(j*41)+22;
-                marcoA.position.x=-((marcoGeometria.width)/2)+0+(i*18)+10;
-                marcoA.position.y=.5;
-                scene.add(marcoA);
-            }
-        }
+        
 
        function crearParedes (ancho, alto, grueso, pX, pY,pZ, paredTextura) {
             var paredGeometria = new THREE.CubeGeometry(ancho, alto, grueso);
@@ -204,13 +224,24 @@
             return pared;
        }
         
-        var paredCentral= crearParedes(65,30,18,25,10,0,paredCTextura);
-        var paredIzquierda= crearParedes(65,30,18,-20,10,50,paredITextura);
-        var paredDerecha= crearParedes(65,30,18,-20,10,-50,paredDTextura);
+			
+        var paredCentral= crearParedes(65,45,18,50,10,0,paredCTextura);
+		var interparedCentral= crearParedes(38,25,8,50,10,0,paredCTextura);
+        var paredIzquierda= crearParedes(65,45,18,-20,10,70,paredITextura);
+		var interparedIzquierda= crearParedes(18,25,18,-21,10,70,paredITextura);
+        var paredDerecha= crearParedes(65,45,18,-20,10,-70,paredDTextura);
+		var interparedDerecha= crearParedes(5,2,2,-21,10,-50,paredDTextura);
         
+		objectsParedesCentral.push(interparedCentral);
+		objectsParedesIzquierda.push(interparedIzquierda);
+		objectsParedesDerecha.push(interparedDerecha);
+		
         scene.add(paredCentral);
+		scene.add(interparedCentral);
         scene.add(paredIzquierda);
+		scene.add(interparedIzquierda);
         scene.add(paredDerecha);
+		scene.add(interparedDerecha);
 
         // position and point the camera to the center of the scene
         camera.position.x =150;
@@ -223,14 +254,13 @@
         scene.add(ambientLight);
 
         // add spotlights for the shadows 
-        var spotLight1 = new THREE.SpotLight( 0xffffff );
+       var spotLight1 = new THREE.SpotLight( 0xffffff );
         spotLight1.position.set( 200, 250, 200 );
         spotLight1.castShadow = true;
         scene.add( spotLight1 );
-
+		
         var spotLight2 = new THREE.SpotLight( 0xffffff );
         spotLight2.position.set( -200, 250, -200 );
-        //spotLight2.castShadow = true;
         scene.add( spotLight2 );
 
 
@@ -242,48 +272,17 @@
         function render() {
             paredIzquierda.rotation.y=4.715;
             paredDerecha.rotation.y=4.715;
+			
       
             requestAnimationFrame(render);
             //graficación con las nuevas posiciones
             renderer.render(scene, camera);
         }
-
-        var projector = new THREE.Projector();
-        var tube;
-
-        function onDocumentMouseDown(event) {
-
-            event.preventDefault();
-
-            var vector = new THREE.Vector3(( event.clientX / window.innerWidth ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1, 0.5);
-            projector.unprojectVector(vector, camera);
-
-            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-
-            var intersects = raycaster.intersectObjects([paredCentral, paredIzquierda, paredDerecha]);
-
-            if (intersects.length > 0) {
-        
-                $('#modal_textura').modal('show');
-                $("#btn_textura1").click(function() {
-                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
-                    intersects[ 0 ].object.material.map = adoquinTextura;
-                    $('#modal_textura').modal('hide');
-                });
-                $("#btn_textura2").click(function() {
-                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
-                    intersects[ 0 ].object.material.map = adoquinTextura;
-                    $('#modal_textura').modal('hide');
-                });
-                $("#btn_textura3").click(function() {
-                    var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
-                    intersects[ 0 ].object.material.map = adoquinTextura;
-                    $('#modal_textura').modal('hide');
-                });        
-
-
-            }
-        }
+		
+		function asignarTextura(texturaE) {
+			var adoquinTextura= new THREE.ImageUtils.loadTexture(texturaE);
+                        objetoClickeado.material.map = adoquinTextura;
+		}
         
         
         function initStats() {
@@ -296,6 +295,131 @@
             $("#stats").append( stats.domElement );
             return stats;
         }
+		
+		
+		var tube;
+        var adoquinTextura;
+		
+		
+		
+		//Funcion para el movimiento al dar clic en la escena
+			function onDocumentMouseDown( event ) {
+				event.preventDefault();
+
+				var vector = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.20, 1);
+				var vector2 = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 1.45 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.21, 1);
+				var vector3 = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 0.91 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.21, 1);
+            
+			
+			projector.unprojectVector(vector, camera);
+            var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+            var intersects = raycaster.intersectObjects(objectsParedesCentral);
+			
+			projector.unprojectVector(vector2, camera);
+			var raycaster = new THREE.Raycaster(camera.position, vector2.sub(camera.position).normalize());
+            var intersectsIz = raycaster.intersectObjects(objectsParedesIzquierda);
+			
+			projector.unprojectVector(vector3, camera);
+			var raycaster = new THREE.Raycaster(camera.position, vector3.sub(camera.position).normalize());
+            var intersectsDe = raycaster.intersectObjects(objectsParedesIzquierda);
+                    
+            if (intersects.length > 0) {
+					objetoClickeado=paredCentral;
+					$('#modal_textura').modal('show');
+					
+                   $("#btn_textura1").click(function() {
+				   asignarTextura("texturas/ladrillo1.jpg");
+						$('#modal_textura').modal('hide');
+                    });
+                    $("#btn_textura2").click(function() {
+					asignarTextura("texturas/piedra7.jpg");
+						$('#modal_textura').modal('hide');
+                    });
+                    $("#btn_textura3").click(function() {
+					asignarTextura("texturas/ladrillo3.jpg");
+					   $('#modal_textura').modal('hide');
+                    });
+					}
+					
+					
+			if (intersectsIz.length > 0) {
+					objetoClickeado=paredIzquierda;
+					$('#modal_textura').modal('show');
+					
+                   $("#btn_textura1").click(function() {
+				   asignarTextura("texturas/ladrillo1.jpg");
+						$('#modal_textura').modal('hide');
+                    });
+                    $("#btn_textura2").click(function() {
+					asignarTextura("texturas/piedra7.jpg");
+						$('#modal_textura').modal('hide');
+                    });
+                    $("#btn_textura3").click(function() {
+					asignarTextura("texturas/ladrillo3.jpg");
+					   $('#modal_textura').modal('hide');
+                    });
+					
+				}
+					
+					
+			if (intersectsDe.length > 0) {
+					objetoClickeado=paredDerecha;
+					$('#modal_textura').modal('show');
+					
+                   $("#btn_textura1").click(function() {
+				   asignarTextura("texturas/ladrillo1.jpg");
+						$('#modal_textura').modal('hide');
+                    });
+                    $("#btn_textura2").click(function() {
+					asignarTextura("texturas/piedra7.jpg");
+						$('#modal_textura').modal('hide');
+                    });
+                    $("#btn_textura3").click(function() {
+					asignarTextura("texturas/ladrillo3.jpg");
+					   $('#modal_textura').modal('hide');
+                    });
+					
+				/*
+				var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1.15, - ( event.clientY / window.innerHeight ) * 2 + 1.15, 1 );
+				projector.unprojectVector( vector, camera );
+				
+				var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
+				var intersects = raycaster.intersectObjects( objects );
+				
+				var vectorc = new THREE.Vector3().copy( intersects[ 0 ].point );
+				intersects[ 0 ].object.worldToLocal( vectorc );
+				
+				var posz;
+				var posx=intersects[ 0 ].point.x;
+				
+				//if(sphere.position.x>0);
+				posz=-((event.clientX - ((window.innerWidth-17)/2))/ajusteX);
+				
+				if(posz<sphere.position.z-2)
+				sphere.position.z-=2;
+				else if(posz>sphere.position.z+2)
+				sphere.position.z+=2;
+				else
+				sphere.position.z=posz;
+				
+				if(posx<sphere.position.x-2)
+				{
+					sphere.position.x-=2;
+					ajusteX-=0.02;}
+				else if(posx>sphere.position.x+2)
+				{
+					sphere.position.x+=2;
+					ajusteX+=0.02;}
+				else
+				sphere.position.x=posx;
+				
+				
+				//alert("esfera: "+sphere.position.x);*/
+				
+				
+				}
+			}
+		
     });
 </script>
   </body>
