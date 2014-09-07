@@ -66,10 +66,11 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-            <h4 class="modal-title" id="myModalLabel">Seleccione una textura</h4>
+            <h4 class="modal-title" id="myModalLabel">Selecciona una textura</h4>
           </div>
           <div class="modal-body">
             <div class="row">
+                <h4>Seleccione una textura:</h4>
                 <div class="col-xs-4">
                     <a id="btn_textura1" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
                 </div>
@@ -79,13 +80,49 @@
                 <div class="col-xs-4">
                     <a id="btn_textura3" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo3.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
                 </div>
-                
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- Modal esfera -->
+    <div class="modal fade" id="modal_esfera" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Selecciona una opci&oacute;n</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <strong><p style="color:#428bca;">Seleccione una textura:</p></strong>
+                <div class="col-xs-4">
+                    <a id="btn_textura1" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura2" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra7.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura3" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo3.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                </div>
+            </div>
+            <div class="row">
+                <strong><p style="color:#428bca;">Activar Drag and Drog</p></strong>
+                <div class="col-xs-12 text-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Activar</button>
+                      <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Desactivar</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 	</div>
+    
     
 	<div id="footer">
       <div class="container">
@@ -399,12 +436,12 @@
 				//if(sphere.position.x>0);
 				posz=-((event.clientX - ((window.innerWidth-17)/2))/ajusteX);
 				
-				if(posz<sphere.position.z-2)
-				sphere.position.z-=2;
-				else if(posz>sphere.position.z+2)
-				sphere.position.z+=2;
-				else
-				sphere.position.z=posz;
+				if(posz<sphere.position.z-2){
+				sphere.position.z-=2;}
+				else if(posz>sphere.position.z+2){
+				sphere.position.z+=2;}
+				else{
+				sphere.position.z=posz;}
 				
 				if(posx<sphere.position.x-2)
 				{
@@ -414,14 +451,14 @@
 				{
 					sphere.position.x+=2;
 					ajusteX+=0.02;}
-				else
-				sphere.position.x=posx;
+				else if((sphere.position.z==posz )&& (sphere.position.x=posx)){
+                    $('#modal_esfera').modal('show');
+                }
 				
 				
-				//alert("esfera: "+sphere.position.x);
+				}
 				
-				
-			}
+			
 		
     });
 </script>
