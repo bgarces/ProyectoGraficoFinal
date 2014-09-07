@@ -309,11 +309,14 @@
 				var vector = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.20, 1);
 				var vector2 = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 1.45 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.21, 1);
 				var vector3 = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 0.91 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.21, 1);
-            
+				
+				//Vector para el seguimiento del puntero
+				var vectorP = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1.15, - ( event.clientY / window.innerHeight ) * 2 + 1.15, 1 );
+				
 			
 			projector.unprojectVector(vector, camera);
             var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
-            var intersects = raycaster.intersectObjects(objectsParedesCentral);
+            var intersectsCt = raycaster.intersectObjects(objectsParedesCentral);
 			
 			projector.unprojectVector(vector2, camera);
 			var raycaster = new THREE.Raycaster(camera.position, vector2.sub(camera.position).normalize());
@@ -322,8 +325,16 @@
 			projector.unprojectVector(vector3, camera);
 			var raycaster = new THREE.Raycaster(camera.position, vector3.sub(camera.position).normalize());
             var intersectsDe = raycaster.intersectObjects(objectsParedesIzquierda);
+			
+			
+			projector.unprojectVector( vectorP, camera );	
+			var	raycaster = new THREE.Raycaster( camera.position, vectorP.sub( camera.position ).normalize() );
+			var intersects = raycaster.intersectObjects( objects );
+				
+			var vectorc = new THREE.Vector3().copy( intersects[ 0 ].point );
+			intersects[ 0 ].object.worldToLocal( vectorc );
                     
-            if (intersects.length > 0) {
+            if (intersectsCt.length > 0) {
 					objetoClickeado=paredCentral;
 					$('#modal_textura').modal('show');
 					
@@ -379,15 +390,7 @@
 					   $('#modal_textura').modal('hide');
                     });
 					
-				/*
-				var vector = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1.15, - ( event.clientY / window.innerHeight ) * 2 + 1.15, 1 );
-				projector.unprojectVector( vector, camera );
-				
-				var raycaster = new THREE.Raycaster( camera.position, vector.sub( camera.position ).normalize() );
-				var intersects = raycaster.intersectObjects( objects );
-				
-				var vectorc = new THREE.Vector3().copy( intersects[ 0 ].point );
-				intersects[ 0 ].object.worldToLocal( vectorc );
+				}
 				
 				var posz;
 				var posx=intersects[ 0 ].point.x;
@@ -406,7 +409,7 @@
 				{
 					sphere.position.x-=2;
 					ajusteX-=0.02;}
-				else if(posx>sphere.position.x+2)
+				else if(posx>sphere.position.x+2)// && paredCentral.position.x> sphere.position.x+2)
 				{
 					sphere.position.x+=2;
 					ajusteX+=0.02;}
@@ -414,10 +417,9 @@
 				sphere.position.x=posx;
 				
 				
-				//alert("esfera: "+sphere.position.x);*/
+				//alert("esfera: "+sphere.position.x);
 				
 				
-				}
 			}
 		
     });
