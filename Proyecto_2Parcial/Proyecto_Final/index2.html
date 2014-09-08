@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Proyecto Three.js</title>
+
+    <!-- Bootstrap -->
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="bootstrap/css/mycss.css" rel="stylesheet">
+    <link href="bootstrap/css/nubes.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+  <div id="menu">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><i class="glyphicon glyphicon-pencil"></i> Proyecto</a>
+        </div>
+        <div class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            
+          </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+    <div id="sq">
+      <div class="circ1"></div>
+      <div class="circ2"></div>
+      <div class="circ3"></div>
+    </div>
+    <div id="sq2">
+      <div class="circ1"></div>
+      <div class="circ2"></div>
+      <div class="circ3"></div>
+    </div>
+    <div id="sq3">
+      <div class="circ1"></div>
+      <div class="circ2"></div>
+      <div class="circ3"></div>
+    </div>
+    
+    <div style="position=absolute;">
+        <audio controls="controls" autoplay>
+            <source src="audios/audioFondo.mp3" type="audio/mp3"/>
+            <source src="audios/audioFondo.ogg" type="audio/ogg"/>
+        </audio>
+    </div>
+    <div id="opengl" class="text-center"></div>
+    <!-- Modal -->
+    <div class="modal fade" id="modal_textura" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Selecciona una textura</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <div class="col-xs-4">
+                    <a id="btn_textura1" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura2" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra7.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura3" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo3.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal esfera -->
+    <div class="modal fade" id="modal_esfera" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Selecciona una opci&oacute;n</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <strong><p style="color:#428bca;">Seleccione una textura:</p></strong>
+                <div class="col-xs-3">
+                    <a id="btn_textura1_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/pelotaMadera.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
+                </div>
+                <div class="col-xs-3">
+                    <a id="btn_textura2_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/pelotaMarmol.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
+                </div>
+                <div class="col-xs-3">
+                    <a id="btn_textura3_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/pelotaPiedra.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                </div>
+                <div class="col-xs-3">
+                    <a id="btn_textura4_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/pelotaGolf.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 4</p></a>
+                </div>
+            </div>
+            <div class="row">
+                <strong><p style="color:#428bca;">Activar Drag and Drog</p></strong>
+                <div class="col-xs-12 text-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-ok"></span> Activar</button>
+                      <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Desactivar</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal_piso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Selecciona una opci&oacute;n</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <strong><p style="color:#428bca;">Seleccione una textura:</p></strong>
+                <div class="col-xs-4">
+                    <a id="btn_textura1_piso" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra91.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura2_piso" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra92.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura3_piso" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra93.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	</div>
+    
+    
+	<div id="footer">
+      <div class="container">
+        <p class="myfooter text-right">Desarrollado por: Raquel Vill&oacute;n, Carlos Franco, Bryan Garc&eacute;s Murillo.</p>
+      </div>
+	</div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="src_tree/three.min.js"></script>
+    <script src="build_stats/dat.gui.js"></script>
+    <script src="build_stats/stats.min.js"></script>
+    <script src="build_stats/webgl-utils.js"></script>
+    <script src="build_stats/glMatrix-0.9.5.min.js"></script>
+    <script src="bootstrap/js/prefixfree.min.js"  type="text/javascript"></script>
+    <!-- Javascript code that runs our Three.js examples -->
+    <script type="text/javascript">
+      $(function () {
+         var stats = initStats();
+        // create a scene, that will hold all our elements such as objects, cameras and lights.
+        var scene = new THREE.Scene();
+        // create a camera, which defines where we're looking at.
+        var camera = new THREE.PerspectiveCamera(75, 1.0277349768875192, 0.1, 1000);
+        // create a render and set the size
+        var renderer = new THREE.WebGLRenderer({ alpha: true });
+        //var renderer = new THREE.WebGLRenderer();
+        //renderer.setClearColorHex(0xffffff, 1.0);
+        renderer.setSize(600, 600);
+        renderer.shadowMapEnabled = true;
+		
+		//variables para el control de los click sobre los objetos
+			var projector = new THREE.Projector();
+			var rotacionesTodas=true;
+			//Arreglo que contendra las paredes
+            var objects = [];
+			var objectsParedes = [];
+			var objectsParedesCentral = [];
+			var objectsParedesIzquierda = [];
+			var objectsParedesDerecha = [];
+			var band=0;
+			
+			//Variable para el objeto al cual se le ha hecho click
+			var objetoClickeado;
+		//Agregar evento para los click de los objetos
+			document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+			//para ajustar el seguimiento de las esferas al puntero
+			var ajusteX1=2.57;
+			var ajusteX2=2.77;
+			var ajusteX3=2.97;
+			
+		 //----------------------TEXTURAS-----------------//
+        var cespedTextura = new THREE.ImageUtils.loadTexture("texturas/cesped1.jpg");
+        var paredCTextura = new THREE.ImageUtils.loadTexture("texturas/piedra7.jpg");
+        var paredITextura = new THREE.ImageUtils.loadTexture("texturas/ladrillo1.jpg");
+        var paredDTextura = new THREE.ImageUtils.loadTexture("texturas/ladrillo3.jpg");
+        	
+
+        // create the ground plane
+        var planoCesped = new THREE.PlaneGeometry(175,225);
+        var cespedMaterial = new THREE.MeshPhongMaterial({ map:cespedTextura, side:THREE.DoubleSide});
+        var cesped = new THREE.Mesh(planoCesped,cespedMaterial);
+        cesped.receiveShadow  = true;
+        // rotate and position the cesped
+        cesped.rotation.x=-0.5*Math.PI;
+        cesped.position.y=1;
+        // add the cesped to the scene
+        scene.add(cesped);
+			
+        //relieve del cesped
+        var relieveGeometria = new THREE.IcosahedronGeometry(4);
+        var relieveMaterial= new THREE.MeshPhongMaterial({ map:cespedTextura, side:THREE.DoubleSide });
+        for (var j = 0 ; j < (planoCesped.height/4) ; j++) {
+            for (var i = 0 ; i < planoCesped.width/4 ; i++) {
+                var cespedR = new THREE.Mesh(relieveGeometria, relieveMaterial);
+                cespedR.position.z=-((planoCesped.height)/2)+1+(j*4)+0;
+                cespedR.position.x=-((planoCesped.width)/2)+1+(i*4)+0;
+                cespedR.position.y=0;
+                cespedR.receiveShadow=true;
+                scene.add(cespedR);
+            }
+        }
+
+        //cargar el modelo blender json
+        var JsonModeloBlender = new THREE.JSONLoader();
+        JsonModeloBlender.load( "texturas/layers260a.js", AgregarModeloBlender );
+
+        function AgregarModeloBlender( geometry, materials ) {
+            imagen=new THREE.ImageUtils.loadTexture('texturas/mario2.jpg');
+            material = new THREE.MeshBasicMaterial( {map:imagen} ); 
+            modelo3d_ = new THREE.Mesh( geometry,material );    
+            scene.add(modelo3d_);
+            //modelo3d_.add(camera);  
+            modelo3d_.scale.set(10,10,10);  
+            modelo3d_.position.set(0,57,50);
+            modelo3d_.rotation.y=Math.PI*0.5;
+        }    					
+		
+        var adoquinGeometria = new THREE.CubeGeometry(18,2,41);
+        var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
+        var adoquinMaterial = new THREE.MeshPhongMaterial({map:adoquinTextura, side:THREE.DoubleSide});
+        for (var i = 0 ; i < planoCesped.width/22 ; i++) {
+                var adoquin = new THREE.Mesh(adoquinGeometria, adoquinMaterial);
+                adoquin.position.z=-((planoCesped.height)/2)+(i*26)+21;
+                adoquin.position.x=-((planoCesped.width)/2)+(i*22)+9;
+                adoquin.position.y=3;
+                scene.add(adoquin);
+                var adoquin2 = new THREE.Mesh(adoquinGeometria, adoquinMaterial);
+                adoquin2.position.x=-((planoCesped.width)/2)+(i*22)+9;
+                adoquin2.position.z=((planoCesped.height)/2)-(i*26)-24;
+                adoquin2.position.y=3;
+                scene.add(adoquin2);
+            }
+
+
+        var marcoGeometria = new THREE.PlaneGeometry(225,250);
+        var marcoTextura = new THREE.ImageUtils.loadTexture("texturas/piedra91.jpg");
+        var marcoMaterial = new THREE.MeshPhongMaterial({map:marcoTextura, side:THREE.DoubleSide});
+        var marco = new THREE.Mesh(marcoGeometria,marcoMaterial);
+        cesped.receiveShadow  = true;
+        // rotate and position the cesped
+        marco.rotation.x=-0.5*Math.PI;
+        // add the cesped to the scene
+        scene.add(marco);
+		objects.push(marco);
+		
+		//creando la esfera
+            var sphereGeometry = new THREE.SphereGeometry(10,54,54);
+            var sphereTexturaPiedra = new THREE.ImageUtils.loadTexture("texturas/pelotaPiedra.jpg");
+            var sphereTexturaMarmol = new THREE.ImageUtils.loadTexture("texturas/pelotaMarmol.jpg");
+            var sphereTexturaGolf = new THREE.ImageUtils.loadTexture("texturas/pelotaGolf.jpg");
+            var sphereTexturaMadera = new THREE.ImageUtils.loadTexture("texturas/pelotaMadera.jpg");
+            var sphereMaterialMadera = new THREE.MeshPhongMaterial({map:sphereTexturaMadera, side:THREE.DoubleSide});
+            var sphereMaterialMarmol = new THREE.MeshPhongMaterial({map:sphereTexturaMarmol, side:THREE.DoubleSide});
+            var sphereMaterialPiedra = new THREE.MeshPhongMaterial({map:sphereTexturaPiedra, side:THREE.DoubleSide});
+            var sphereMaterialGolf = new THREE.MeshPhongMaterial({map:sphereTexturaGolf, side:THREE.DoubleSide});
+            //sphereMaterial.shading = THREE.FlatShading;
+            var sphere1 = new THREE.Mesh(sphereGeometry,sphereMaterialMarmol);
+            // posición de la esfera1 
+            sphere1.position.x=50;
+            sphere1.position.y=20;
+            sphere1.position.z=20;
+            sphere1.castShadow=true;
+			var sphere2 = new THREE.Mesh(sphereGeometry,sphereMaterialMadera);
+            // posición de la esfera2
+            sphere2.position.x=30;
+            sphere2.position.y=20;
+            sphere2.position.z=40;
+            sphere2.castShadow=true;
+			var sphere3 = new THREE.Mesh(sphereGeometry,sphereMaterialPiedra);
+            // posición de la esfera3 
+            sphere3.position.x=70;
+            sphere3.position.y=20;
+            sphere3.position.z=40;
+            sphere3.castShadow=true;
+            // adiriendolo a la escena 
+            scene.add(sphere1);
+			scene.add(sphere2);
+			scene.add(sphere3);
+			
+
+        
+
+       function crearParedes (ancho, alto, grueso, pX, pY,pZ, paredTextura) {
+            var paredGeometria = new THREE.CubeGeometry(ancho, alto, grueso);
+            
+            var paredMaterial = new THREE.MeshPhongMaterial({ map:paredTextura, side:THREE.DoubleSide });
+            var pared = new THREE.Mesh(paredGeometria, paredMaterial);
+            // posicion de pared 1
+            pared.position.x=pX;
+            pared.position.y=pY;
+            pared.position.z=pZ;
+            pared.castShadow=true;
+            return pared;
+       }
+        
+			
+        var paredCentral= crearParedes(65,45,18,50,10,0,paredCTextura);
+		var interparedCentral= crearParedes(38,25,8,50,10,0,paredCTextura);
+        var paredIzquierda= crearParedes(65,45,18,-20,10,70,paredITextura);
+		var interparedIzquierda= crearParedes(18,25,18,-21,10,70,paredITextura);
+        var paredDerecha= crearParedes(65,45,18,-20,10,-70,paredDTextura);
+		var interparedDerecha= crearParedes(5,2,2,-21,10,-50,paredDTextura);
+        
+		objectsParedesCentral.push(interparedCentral);
+		objectsParedesIzquierda.push(interparedIzquierda);
+		objectsParedesDerecha.push(interparedDerecha);
+		
+        scene.add(paredCentral);
+		scene.add(interparedCentral);
+        scene.add(paredIzquierda);
+		scene.add(interparedIzquierda);
+        scene.add(paredDerecha);
+		scene.add(interparedDerecha);
+
+        // position and point the camera to the center of the scene
+        camera.position.x =150;
+        camera.position.y =125;
+        camera.position.z =0;
+        camera.lookAt(scene.position);
+
+        // add subtle ambient lighting
+        var ambientLight = new THREE.AmbientLight(0x0c0c0c);
+        scene.add(ambientLight);
+
+        // add spotlights for the shadows 
+       var spotLight1 = new THREE.SpotLight( 0xffffff );
+        spotLight1.position.set( 200, 250, 200 );
+        spotLight1.castShadow = true;
+        scene.add( spotLight1 );
+		
+        var spotLight2 = new THREE.SpotLight( 0xffffff );
+        spotLight2.position.set( -200, 250, -200 );
+        scene.add( spotLight2 );
+
+
+        // add the output of the renderer to the html element
+        $("#opengl").append(renderer.domElement);
+        //ángulo de moviemiento inicial de cada figura. 
+
+        render();
+        function render() {
+            paredIzquierda.rotation.y=4.715;
+            paredDerecha.rotation.y=4.715;
+			
+      
+            requestAnimationFrame(render);
+            //graficación con las nuevas posiciones
+            renderer.render(scene, camera);
+        }
+		
+		function asignarTextura(texturaE) {
+			var adoquinTextura= new THREE.ImageUtils.loadTexture(texturaE);
+                        objetoClickeado.material.map = adoquinTextura;
+		}
+        
+        
+        function initStats() {
+            var stats = new Stats();
+            stats.setMode(0); // 0: fps, 1: ms
+            // Align top-left
+            stats.domElement.style.position = 'relative';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+            $("#stats").append( stats.domElement );
+            return stats;
+        }
+		
+		
+		var tube;
+        var adoquinTextura;
+		
+		
+		
+		//Funcion para el movimiento al dar clic en la escena
+			function onDocumentMouseDown( event ) {
+				event.preventDefault();
+				
+				//Vectores para las paredes
+				var vector = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 2 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.20, 1);
+				var vector2 = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 1.45 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.21, 1);
+				var vector3 = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 0.91 - 1, -( event.clientY / window.innerHeight ) * 2 + 1.21, 1);
+				
+				//Vector para el seguimiento del puntero
+				var vectorP = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1.15, - ( event.clientY / window.innerHeight ) * 2 + 1.15, 1 );
+				
+			
+				projector.unprojectVector(vector, camera);
+				var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+				var intersectsCt = raycaster.intersectObjects(objectsParedesCentral);
+				
+				projector.unprojectVector(vector2, camera);
+				var raycaster = new THREE.Raycaster(camera.position, vector2.sub(camera.position).normalize());
+				var intersectsIz = raycaster.intersectObjects(objectsParedesIzquierda);
+				
+				projector.unprojectVector(vector3, camera);
+				var raycaster = new THREE.Raycaster(camera.position, vector3.sub(camera.position).normalize());
+				var intersectsDe = raycaster.intersectObjects(objectsParedesIzquierda);
+				
+				projector.unprojectVector( vectorP, camera );	
+				var	raycaster = new THREE.Raycaster( camera.position, vectorP.sub( camera.position ).normalize() );
+				var intersects = raycaster.intersectObjects( objects );
+					
+				var vectorc = new THREE.Vector3().copy( intersects[ 0 ].point );
+				intersects[ 0 ].object.worldToLocal( vectorc );
+
+                var vector = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 2 -0.5, -( event.clientY / window.innerHeight ) * 2 + 1.20, 1);
+                projector.unprojectVector(vector, camera);
+                var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+                var intersectsM = raycaster.intersectObjects([marco,cesped]);
+                    
+				if (intersectsCt.length > 0) {
+						objetoClickeado=paredCentral;
+						$('#modal_textura').modal('show');
+						  $("#btn_textura1").click(function() {
+					   asignarTextura("texturas/ladrillo1.jpg");
+							$('#modal_textura').modal('hide');
+						});
+						$("#btn_textura2").click(function() {
+						asignarTextura("texturas/piedra7.jpg");
+							$('#modal_textura').modal('hide');
+						});
+						$("#btn_textura3").click(function() {
+						asignarTextura("texturas/ladrillo3.jpg");
+						   $('#modal_textura').modal('hide');
+						});
+						}
+					
+					
+				if (intersectsIz.length > 0) {
+						objetoClickeado=paredIzquierda;
+						$('#modal_textura').modal('show');
+						
+					   $("#btn_textura1").click(function() {
+					   asignarTextura("texturas/ladrillo1.jpg");
+							$('#modal_textura').modal('hide');
+						});
+						$("#btn_textura2").click(function() {
+						asignarTextura("texturas/piedra7.jpg");
+							$('#modal_textura').modal('hide');
+						});
+						$("#btn_textura3").click(function() {
+						asignarTextura("texturas/ladrillo3.jpg");
+						   $('#modal_textura').modal('hide');
+						});
+						
+					}
+						
+						
+				if (intersectsDe.length > 0) {
+						objetoClickeado=paredDerecha;
+						$('#modal_textura').modal('show');
+						
+					   $("#btn_textura1").click(function() {
+					   asignarTextura("texturas/ladrillo1.jpg");
+							$('#modal_textura').modal('hide');
+						});
+						$("#btn_textura2").click(function() {
+						asignarTextura("texturas/piedra7.jpg");
+							$('#modal_textura').modal('hide');
+						});
+						$("#btn_textura3").click(function() {
+						asignarTextura("texturas/ladrillo3.jpg");
+						   $('#modal_textura').modal('hide');
+						});
+						
+					}
+
+                    if (intersectsM[0].object==marco) {
+                        objetoClickeado=marco;
+                        $('#modal_piso').modal('show');
+                        
+                       $("#btn_textura1_piso").click(function() {
+                       asignarTextura("texturas/piedra91.jpg");
+                            $('#modal_piso').modal('hide');
+                        });
+                        $("#btn_textura2_piso").click(function() {
+                        asignarTextura("texturas/piedra92.jpg");
+                            $('#modal_piso').modal('hide');
+                        });
+                        $("#btn_textura3_piso").click(function() {
+                        asignarTextura("texturas/piedra93.jpg");
+                           $('#modal_piso').modal('hide');
+                        });
+                    };
+
+				
+				//Posiciones del mouse
+				var posz1;
+				var posz2;
+				var posz3;
+				var posx=intersects[ 0 ].point.x;
+				posz1=-((event.clientX - ((window.innerWidth-17)/2))/ajusteX1);
+				posz2=-((event.clientX - ((window.innerWidth-17)/2))/ajusteX2);
+				posz3=-((event.clientX - ((window.innerWidth-17)/2))/ajusteX3);
+				
+				//esfera1
+				if(((posx<=sphere1.position.x && posx>sphere1.position.x-20) || (posx>=sphere1.position.x && posx<sphere1.position.x+6)) 
+						&& ((posz1<=sphere1.position.z && posz1>sphere1.position.z-7) || (posz1>=sphere1.position.z && posz1<sphere1.position.z+7))){
+                        objetoClickeado=sphere1;
+    				    $('#modal_esfera').modal('show');
+                        $("#btn_textura1_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMadera.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura2_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMarmol.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura3_esfera").click(function() {
+                        asignarTextura("texturas/pelotaPiedra.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura4_esfera").click(function() {
+                        asignarTextura("texturas/pelotaGolf.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+
+                }
+				//esfera2
+				if(((posx<=sphere2.position.x && posx>sphere2.position.x-20) || (posx>=sphere2.position.x && posx<sphere2.position.x+6)) 
+						&& ((posz2<=sphere2.position.z && posz2>sphere2.position.z-7) || (posz2>=sphere2.position.z && posz2<sphere2.position.z+7))){
+				    objetoClickeado=sphere2;
+                        $('#modal_esfera').modal('show');
+                        $("#btn_textura1_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMadera.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura2_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMarmol.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura3_esfera").click(function() {
+                        asignarTextura("texturas/pelotaPiedra.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura4_esfera").click(function() {
+                        asignarTextura("texturas/pelotaGolf.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+                }
+				//esfera3
+				if(((posx<=sphere3.position.x && posx>sphere3.position.x-20) || (posx>=sphere3.position.x && posx<sphere3.position.x+6)) 
+						&& ((posz3<=sphere3.position.z && posz3>sphere3.position.z-7) || (posz3>=sphere3.position.z && posz3<sphere3.position.z+7))){
+				    objetoClickeado=sphere3;
+                        $('#modal_esfera').modal('show');
+                        $("#btn_textura1_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMadera.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura2_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMarmol.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura3_esfera").click(function() {
+                        asignarTextura("texturas/pelotaPiedra.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura4_esfera").click(function() {
+                        asignarTextura("texturas/pelotaGolf.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+                }
+				
+                //punteros al marco
+
+                var posmx;
+                var posmy;
+
+				//Movimiento Independiente de las esferas
+				//Movimiento de la esfera1
+				if(posz1<sphere1.position.z-2){
+					sphere1.position.z-=2;
+                }
+				else if(posz1>sphere1.position.z+2){
+					sphere1.position.z+=2;
+                }
+				else{
+					sphere1.position.z=posz1;
+                }
+				
+				if(posx<sphere1.position.x-2)
+				{	sphere1.position.x-=2;
+					ajusteX1-=0.02;}
+				else if(posx>sphere1.position.x+2)
+				{	sphere1.position.x+=2;
+					ajusteX1+=0.02;}
+				else{
+					sphere1.position.x=posx;
+                }
+				//Movimiento de la esfera2
+				if(posz2<sphere2.position.z-2){
+					sphere2.position.z-=2;
+                }
+				else if(posz2>sphere1.position.z+2){
+					sphere2.position.z+=2;
+                }
+				else{
+					sphere2.position.z=posz2;
+                }
+				
+				if(posx<sphere2.position.x-2)
+				{	sphere2.position.x-=2;
+					ajusteX2-=0.02;}
+				else if(posx>sphere2.position.x+2)
+				{	sphere2.position.x+=2;
+					ajusteX2+=0.02;}
+				else{
+					sphere2.position.x=posx;
+                }
+				//Movimiento de la esfera3
+				if(posz3<sphere3.position.z-2){
+					sphere3.position.z-=2;
+                }
+				else if(posz3>sphere3.position.z+2){
+					sphere3.position.z+=2;
+                }
+				else{
+					sphere3.position.z=posz3;
+                }
+				
+				if(posx<sphere3.position.x-2)
+				{	sphere3.position.x-=2;
+					ajusteX3-=0.02;}
+				else if(posx>sphere3.position.x+2)
+				{	sphere3.position.x+=2;
+					ajusteX3+=0.02;}
+				else{
+					sphere3.position.x=posx;			
+                }
+			}
+		
+    });
+</script>
+  </body>
+</html>
