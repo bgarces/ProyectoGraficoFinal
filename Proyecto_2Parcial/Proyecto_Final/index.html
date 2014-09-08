@@ -205,7 +205,20 @@
             }
         }
 
-					
+        //cargar el modelo blender json
+        var JsonModeloBlender = new THREE.JSONLoader();
+        JsonModeloBlender.load( "texturas/layers260a.js", AgregarModeloBlender );
+
+        function AgregarModeloBlender( geometry, materials ) {
+            imagen=new THREE.ImageUtils.loadTexture('texturas/mario2.jpg');
+            material = new THREE.MeshBasicMaterial( {map:imagen} ); 
+            modelo3d_ = new THREE.Mesh( geometry,material );    
+            scene.add(modelo3d_);
+            //modelo3d_.add(camera);  
+            modelo3d_.scale.set(10,10,10);  
+            modelo3d_.position.set(0,57,50);
+            modelo3d_.rotation.y=Math.PI*0.5;
+        }    					
 		
         var adoquinGeometria = new THREE.CubeGeometry(18,2,41);
         var adoquinTextura= new THREE.ImageUtils.loadTexture("texturas/piedra2.jpg");
