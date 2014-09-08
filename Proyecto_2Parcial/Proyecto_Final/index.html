@@ -123,6 +123,31 @@
       </div>
     </div>
 
+    <div class="modal fade" id="modal_piso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title" id="myModalLabel">Selecciona una opci&oacute;n</h4>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                <strong><p style="color:#428bca;">Seleccione una textura:</p></strong>
+                <div class="col-xs-4">
+                    <a id="btn_textura1_piso" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra91.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura2_piso" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra92.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
+                </div>
+                <div class="col-xs-4">
+                    <a id="btn_textura3_piso" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra93.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
 	</div>
     
     
@@ -186,7 +211,7 @@
 
         // create the ground plane
         var planoCesped = new THREE.PlaneGeometry(175,225);
-        var cespedMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        var cespedMaterial = new THREE.MeshPhongMaterial({ map:cespedTextura, side:THREE.DoubleSide });
         var cesped = new THREE.Mesh(planoCesped,cespedMaterial);
         cesped.receiveShadow  = true;
         // rotate and position the cesped
@@ -410,6 +435,11 @@
 					
 				var vectorc = new THREE.Vector3().copy( intersects[ 0 ].point );
 				intersects[ 0 ].object.worldToLocal( vectorc );
+
+                var vector = new THREE.Vector3(( event.clientX / (window.innerWidth) ) * 2 -0.5, -( event.clientY / window.innerHeight ) * 2 + 1.20, 1);
+                projector.unprojectVector(vector, camera);
+                var raycaster = new THREE.Raycaster(camera.position, vector.sub(camera.position).normalize());
+                var intersectsM = raycaster.intersectObjects([marco,cesped]);
                     
 				if (intersectsCt.length > 0) {
 						objetoClickeado=paredCentral;
@@ -467,6 +497,23 @@
 						});
 						
 					}
+                    if (intersectsM[0].object==marco) {
+                        objetoClickeado=marco;
+                        $('#modal_piso').modal('show');
+                        
+                       $("#btn_textura1_piso").click(function() {
+                       asignarTextura("texturas/piedra91.jpg");
+                            $('#modal_piso').modal('hide');
+                        });
+                        $("#btn_textura2_piso").click(function() {
+                        asignarTextura("texturas/piedra92.jpg");
+                            $('#modal_piso').modal('hide');
+                        });
+                        $("#btn_textura3_piso").click(function() {
+                        asignarTextura("texturas/piedra93.jpg");
+                           $('#modal_piso').modal('hide');
+                        });
+                    };
 
 
 				
