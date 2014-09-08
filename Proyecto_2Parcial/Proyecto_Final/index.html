@@ -96,14 +96,17 @@
           <div class="modal-body">
             <div class="row">
                 <strong><p style="color:#428bca;">Seleccione una textura:</p></strong>
-                <div class="col-xs-4">
-                    <a id="btn_textura1_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo1.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
+                <div class="col-xs-3">
+                    <a id="btn_textura1_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/pelotaMadera.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 1</p></a>
                 </div>
-                <div class="col-xs-4">
-                    <a id="btn_textura2_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/piedra7.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
+                <div class="col-xs-3">
+                    <a id="btn_textura2_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/pelotaMarmol.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 2</p></a>
                 </div>
-                <div class="col-xs-4">
-                    <a id="btn_textura3_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/ladrillo3.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                <div class="col-xs-3">
+                    <a id="btn_textura3_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/pelotaPiedra.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 3</p></a>
+                </div>
+                <div class="col-xs-3">
+                    <a id="btn_textura4_esfera" class="thumbnail"><img style="width:140px;height:140px;" src="texturas/pelotaGolf.jpg" alt="click para aplicar la textura" class="img-circle"><p class="text-center">Textura 4</p></a>
                 </div>
             </div>
             <div class="row">
@@ -237,21 +240,28 @@
 		
 		//creando la esfera
             var sphereGeometry = new THREE.SphereGeometry(10,54,54);
-            var sphereMaterial = new THREE.MeshLambertMaterial({color: 0x7777ff});
-            sphereMaterial.shading = THREE.FlatShading;
-            var sphere1 = new THREE.Mesh(sphereGeometry,sphereMaterial);
+            var sphereTexturaPiedra = new THREE.ImageUtils.loadTexture("texturas/pelotaPiedra.jpg");
+            var sphereTexturaMarmol = new THREE.ImageUtils.loadTexture("texturas/pelotaMarmol.jpg");
+            var sphereTexturaGolf = new THREE.ImageUtils.loadTexture("texturas/pelotaGolf.jpg");
+            var sphereTexturaMadera = new THREE.ImageUtils.loadTexture("texturas/pelotaMadera.jpg");
+            var sphereMaterialMadera = new THREE.MeshPhongMaterial({map:sphereTexturaMadera, side:THREE.DoubleSide});
+            var sphereMaterialMarmol = new THREE.MeshPhongMaterial({map:sphereTexturaMarmol, side:THREE.DoubleSide});
+            var sphereMaterialPiedra = new THREE.MeshPhongMaterial({map:sphereTexturaPiedra, side:THREE.DoubleSide});
+            var sphereMaterialGolf = new THREE.MeshPhongMaterial({map:sphereTexturaGolf, side:THREE.DoubleSide});
+            //sphereMaterial.shading = THREE.FlatShading;
+            var sphere1 = new THREE.Mesh(sphereGeometry,sphereMaterialMarmol);
             // posición de la esfera1 
             sphere1.position.x=50;
             sphere1.position.y=20;
             sphere1.position.z=20;
             sphere1.castShadow=true;
-			var sphere2 = new THREE.Mesh(sphereGeometry,sphereMaterial);
+			var sphere2 = new THREE.Mesh(sphereGeometry,sphereMaterialMadera);
             // posición de la esfera2
             sphere2.position.x=30;
             sphere2.position.y=20;
             sphere2.position.z=40;
             sphere2.castShadow=true;
-			var sphere3 = new THREE.Mesh(sphereGeometry,sphereMaterial);
+			var sphere3 = new THREE.Mesh(sphereGeometry,sphereMaterialPiedra);
             // posición de la esfera3 
             sphere3.position.x=70;
             sphere3.position.y=20;
@@ -391,8 +401,7 @@
 				if (intersectsCt.length > 0) {
 						objetoClickeado=paredCentral;
 						$('#modal_textura').modal('show');
-						
-					   $("#btn_textura1").click(function() {
+						  $("#btn_textura1").click(function() {
 					   asignarTextura("texturas/ladrillo1.jpg");
 							$('#modal_textura').modal('hide');
 						});
@@ -445,6 +454,8 @@
 						});
 						
 					}
+
+
 				
 				//Posiciones del mouse
 				var posz1;
@@ -458,17 +469,69 @@
 				//esfera1
 				if(((posx<=sphere1.position.x && posx>sphere1.position.x-20) || (posx>=sphere1.position.x && posx<sphere1.position.x+6)) 
 						&& ((posz1<=sphere1.position.z && posz1>sphere1.position.z-7) || (posz1>=sphere1.position.z && posz1<sphere1.position.z+7))){
-				$('#modal_esfera').modal('show');//
+                        objetoClickeado=sphere1;
+    				    $('#modal_esfera').modal('show');
+                        $("#btn_textura1_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMadera.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura2_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMarmol.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura3_esfera").click(function() {
+                        asignarTextura("texturas/pelotaPiedra.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura4_esfera").click(function() {
+                        asignarTextura("texturas/pelotaGolf.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+
                 }
 				//esfera2
 				if(((posx<=sphere2.position.x && posx>sphere2.position.x-20) || (posx>=sphere2.position.x && posx<sphere2.position.x+6)) 
 						&& ((posz2<=sphere2.position.z && posz2>sphere2.position.z-7) || (posz2>=sphere2.position.z && posz2<sphere2.position.z+7))){
-				$('#modal_esfera').modal('show');
+				    objetoClickeado=sphere2;
+                        $('#modal_esfera').modal('show');
+                        $("#btn_textura1_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMadera.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura2_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMarmol.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura3_esfera").click(function() {
+                        asignarTextura("texturas/pelotaPiedra.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura4_esfera").click(function() {
+                        asignarTextura("texturas/pelotaGolf.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
                 }
 				//esfera3
 				if(((posx<=sphere3.position.x && posx>sphere3.position.x-20) || (posx>=sphere3.position.x && posx<sphere3.position.x+6)) 
 						&& ((posz3<=sphere3.position.z && posz3>sphere3.position.z-7) || (posz3>=sphere3.position.z && posz3<sphere3.position.z+7))){
-				$('#modal_esfera').modal('show');
+				    objetoClickeado=sphere3;
+                        $('#modal_esfera').modal('show');
+                        $("#btn_textura1_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMadera.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura2_esfera").click(function() {
+                        asignarTextura("texturas/pelotaMarmol.jpg");
+                            $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura3_esfera").click(function() {
+                        asignarTextura("texturas/pelotaPiedra.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
+                        $("#btn_textura4_esfera").click(function() {
+                        asignarTextura("texturas/pelotaGolf.jpg");
+                           $('#modal_esfera').modal('hide');
+                        });
                 }
 				
 				//Movimiento Independiente de las esferas
